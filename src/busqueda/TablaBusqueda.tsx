@@ -67,22 +67,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import SearchIcon from '@material-ui/icons/Search';
 
-interface Data {
+export interface Data {
+  documento:string;
   nombre: string;
   apellido: string;
 }
-
-function createData(
-  nombre: string,
-  apellido: string,
-): Data {
-  return { nombre, apellido };
-}
-
-const rows = [
-  createData('mati', "b"),
-  createData('john', 'doe'),
-];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -123,6 +112,7 @@ interface HeadCell {
 }
 
 const headCells: HeadCell[] = [
+  { id: 'documento', numeric: false, disablePadding: true, label: 'CI' },
   { id: 'nombre', numeric: false, disablePadding: true, label: 'Nombres' },
   { id: 'apellido', numeric: true, disablePadding: false, label: 'Apellidos' },
   // { id: 'buscar', numeric: true, disablePadding: false, label: 'Buscar' },
@@ -272,7 +262,12 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export const TablaBusqueda =()=> {
+interface TablaBusquedaProps {
+  datos: Data[]
+}
+
+export const TablaBusqueda =(props: TablaBusquedaProps)=> {
+  const {datos} = props;
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('nombre');
@@ -330,7 +325,7 @@ export const TablaBusqueda =()=> {
 
   // const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, datos.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
@@ -350,10 +345,10 @@ export const TablaBusqueda =()=> {
               orderBy={orderBy}
               // onSelectAllClick={()=>console.log('test')}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={datos.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(datos, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   // const isItemSelected = isSelected(row.nombre);
@@ -375,6 +370,7 @@ export const TablaBusqueda =()=> {
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell> */}
+                      <TableCell align="right">{row.documento}</TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
                         {row.nombre}
                       </TableCell>
@@ -394,7 +390,7 @@ export const TablaBusqueda =()=> {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={datos.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}

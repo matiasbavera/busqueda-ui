@@ -5,6 +5,7 @@ import SearchIcon from '@material-ui/icons/Search';
 export const FormularioBusqueda =(props:any) =>{
     return (
         <>
+          <TextField label={'CI'}></TextField>
           <TextField label={'Nombres'}></TextField>
           <TextField label={'Apellidos'}></TextField>
           {/* <TextField label={'Caso'}></TextField>
