@@ -1,49 +1,3 @@
-// import React from 'react';
-
-// import { DataGrid, ColDef, ValueGetterParams } from '@material-ui/data-grid';
-
-
-// const columns: ColDef[] = [
-//   { field: 'id', headerName: 'ID', width: 70 },
-//   { field: 'firstName', headerName: 'First name', width: 130 },
-//   { field: 'lastName', headerName: 'Last name', width: 130 },
-//   {
-//     field: 'age',
-//     headerName: 'Age',
-//     type: 'number',
-//     width: 90,
-//   },
-//   {
-//     field: 'fullName',
-//     headerName: 'Full name',
-//     description: 'This column has a value getter and is not sortable.',
-//     sortable: false,
-//     width: 160,
-//     valueGetter: (params: ValueGetterParams) =>
-//       `${params.getValue('firstName') || ''} ${params.getValue('lastName') || ''}`,
-//   },
-// ];
-
-// const rows = [
-//   { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-//   { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-//   { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-//   { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-//   { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-//   { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-//   { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-//   { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-//   { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-// ];
-
-// export function TablaBusqueda() {
-//   return (
-//     <div style={{ height: 400, width: '100%' }}>
-//       <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection />
-//     </div>
-//   );
-// }
-
 import React from 'react';
 import clsx from 'clsx';
 import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
@@ -68,7 +22,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import SearchIcon from '@material-ui/icons/Search';
 
 export interface Data {
-  documento:string;
+  documento: string;
   nombre: string;
   apellido: string;
 }
@@ -137,8 +91,8 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        { numSelected &&
-            <TableCell padding="checkbox">
+        {numSelected && (
+          <TableCell padding="checkbox">
             <Checkbox
               indeterminate={numSelected > 0 && numSelected < rowCount}
               checked={rowCount > 0 && numSelected === rowCount}
@@ -146,8 +100,8 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               inputProps={{ 'aria-label': 'select all desserts' }}
             />
           </TableCell>
-        }
-        
+        )}
+
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -173,68 +127,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     </TableHead>
   );
 }
-
-const useToolbarStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(1),
-    },
-    highlight:
-      theme.palette.type === 'light'
-        ? {
-            color: theme.palette.secondary.main,
-            backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-          }
-        : {
-            color: theme.palette.text.primary,
-            backgroundColor: theme.palette.secondary.dark,
-          },
-    title: {
-      flex: '1 1 100%',
-    },
-  }),
-);
-
-interface EnhancedTableToolbarProps {
-  numSelected: number;
-}
-
-const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-  const classes = useToolbarStyles();
-  const { numSelected } = props;
-
-  return (
-    <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}
-    >
-      {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-          Nutrition
-        </Typography>
-      )}
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-};
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -263,11 +155,11 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface TablaBusquedaProps {
-  datos: Data[]
+  datos: Data[];
 }
 
-export const TablaBusqueda =(props: TablaBusquedaProps)=> {
-  const {datos} = props;
+export const TablaBusqueda = (props: TablaBusquedaProps) => {
+  const { datos } = props;
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('nombre');
@@ -375,7 +267,11 @@ export const TablaBusqueda =(props: TablaBusquedaProps)=> {
                         {row.nombre}
                       </TableCell>
                       <TableCell align="right">{row.apellido}</TableCell>
-                      <TableCell align="right"><IconButton><SearchIcon/></IconButton></TableCell>
+                      <TableCell align="right">
+                        <IconButton>
+                          <SearchIcon />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -403,4 +299,66 @@ export const TablaBusqueda =(props: TablaBusquedaProps)=> {
       />
     </div>
   );
-}
+};
+
+// const useToolbarStyles = makeStyles((theme: Theme) =>
+//   createStyles({
+//     root: {
+//       paddingLeft: theme.spacing(2),
+//       paddingRight: theme.spacing(1),
+//     },
+//     highlight:
+//       theme.palette.type === 'light'
+//         ? {
+//             color: theme.palette.secondary.main,
+//             backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+//           }
+//         : {
+//             color: theme.palette.text.primary,
+//             backgroundColor: theme.palette.secondary.dark,
+//           },
+//     title: {
+//       flex: '1 1 100%',
+//     },
+//   }),
+// );
+
+// interface EnhancedTableToolbarProps {
+//   numSelected: number;
+// }
+
+// const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
+//   const classes = useToolbarStyles();
+//   const { numSelected } = props;
+
+//   return (
+//     <Toolbar
+//       className={clsx(classes.root, {
+//         [classes.highlight]: numSelected > 0,
+//       })}
+//     >
+//       {numSelected > 0 ? (
+//         <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
+//           {numSelected} selected
+//         </Typography>
+//       ) : (
+//         <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+//           Nutrition
+//         </Typography>
+//       )}
+//       {numSelected > 0 ? (
+//         <Tooltip title="Delete">
+//           <IconButton aria-label="delete">
+//             <DeleteIcon />
+//           </IconButton>
+//         </Tooltip>
+//       ) : (
+//         <Tooltip title="Filter list">
+//           <IconButton aria-label="filter list">
+//             <FilterListIcon />
+//           </IconButton>
+//         </Tooltip>
+//       )}
+//     </Toolbar>
+//   );
+// };
