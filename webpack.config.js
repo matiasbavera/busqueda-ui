@@ -7,14 +7,17 @@ const BundleTracker = require('webpack-bundle-tracker');
 module.exports = {
     mode: 'development',
     entry: [
-        'webpack-dev-server/client?http://localhost:3000',
-        'webpack/hot/only-dev-server',
+        // 'webpack-dev-server/client?http://localhost:3000',
+        // 'webpack/hot/only-dev-server',
         './src/index.tsx'
     ],
 
     output: {
         path: __dirname + '/dist',
-        filename: '[name]-[hash].js',
+        filename: 'bundle.js',
+        publicPath: __dirname + '/dist',
+        publicPath: 'http://localhost:3000/dist/',
+        publicPath: 'http://0.0.0.0:3000/dist/',
         publicPath: 'http://localhost:3000/dist/bundles/', // Tell django to use this URL to load packages and not use STATIC_URL + bundle_name
     },
 
@@ -66,4 +69,9 @@ module.exports = {
         'react': 'React',
         'react-dom': 'ReactDOM'
     },
+    devServer: {
+        contentBase: path.join(__dirname, 'public'),
+        compress: true,
+        port: 3000
+    }
 };
