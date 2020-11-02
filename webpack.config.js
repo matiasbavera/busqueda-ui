@@ -11,14 +11,15 @@ module.exports = {
         // 'webpack/hot/only-dev-server',
         './src/index.tsx'
     ],
-
+    watch:true,
     output: {
         path: __dirname + '/dist',
         filename: 'bundle.js',
-        publicPath: __dirname + '/dist',
-        publicPath: 'http://localhost:3000/dist/',
-        publicPath: 'http://0.0.0.0:3000/dist/',
-        publicPath: 'http://localhost:3000/dist/bundles/', // Tell django to use this URL to load packages and not use STATIC_URL + bundle_name
+        publicPath: '/'
+        // publicPath: __dirname + '/dist',
+        // publicPath: 'http://localhost:3000/dist/',
+        // publicPath: 'http://0.0.0.0:3000/dist/',
+        // publicPath: 'http://localhost:3000/dist/bundles/', // Tell django to use this URL to load packages and not use STATIC_URL + bundle_name
     },
 
     devtool: 'source-map',
@@ -70,7 +71,8 @@ module.exports = {
         'react-dom': 'ReactDOM'
     },
     devServer: {
-        contentBase: path.join(__dirname, 'public'),
+        contentBase: './dist',
+        hot: true,
         compress: true,
         port: 3000
     }
