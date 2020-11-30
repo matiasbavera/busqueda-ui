@@ -1,9 +1,10 @@
 import { IconButton, TextField } from '@material-ui/core';
 import React from 'react';
 import SearchIcon from '@material-ui/icons/Search';
+import { BusquedaQueryProps } from './Busqueda';
 
 interface FormularioBusquedaProps {
-  handleFormRequest():void;
+  handleFormRequest(query:BusquedaQueryProps):void;
 }
 
 export const FormularioBusqueda = (props: FormularioBusquedaProps) => {
@@ -16,10 +17,19 @@ export const FormularioBusqueda = (props: FormularioBusquedaProps) => {
   const [errorNombre, setErrorNombre] =  React.useState('');
   const [errorApellido, setErrorApellido] =  React.useState('');
 
+  const cleanForm = ()=>{
+    setErrorCi('');
+    setErrorNombre('');
+    setErrorApellido('')
+  }
 
   const isFormValid = (): boolean =>{
+    cleanForm();
     let isValid = true;
     if (ci === '' && nombre === '' && apellido === ''){
+      setErrorCi('No puede estar vacío');
+      setErrorNombre('No puede estar vacío');
+      setErrorApellido('No puede estar vacío'); 
       isValid = false;
     }
     return isValid
@@ -27,7 +37,15 @@ export const FormularioBusqueda = (props: FormularioBusquedaProps) => {
 
   const formRequest = ():void =>{
     if (isFormValid()){
-      handleFormRequest();
+      handleFormRequest(
+        {
+          ci: ci,
+          nombre: nombre,
+          apellido: apellido,
+          nombre_apellido: `${nombre} ${apellido}`,
+        }
+      );
+      cleanForm();
     }
 
   }
@@ -84,7 +102,7 @@ export const FormularioBusqueda = (props: FormularioBusquedaProps) => {
       {/* <TextField label={'Caso'}></TextField>
             <TextField label={'Despacho'}></TextField>
             <TextField label={'ID. Documento'}></TextField> */}
-      <IconButton id="buscar-btn" color="primary" onClick={handleFormRequest}>
+      <IconButton id="buscar-btn" color="primary" onClick={formRequest}>
         <SearchIcon />
       </IconButton>
     </form>

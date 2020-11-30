@@ -3,24 +3,8 @@ import React from 'react';
 import { FormularioBusqueda } from './FormularioBusqueda';
 import { Data, TablaBusqueda } from './TablaBusqueda';
 import axios from 'axios';
-
-const apiUrl = 'http://localhost:8000/persona/buscar/';
-
-function getCookie(name:any) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
+import { REACT_APP_URL } from '../app-config';
+import { getCookie } from '../utils/cookies';
 
 const csrftoken = getCookie('csrftoken');
 
@@ -28,12 +12,21 @@ function createData(documento: string, nombre: string, apellido: string): Data {
   return { documento, nombre, apellido };
 }
 
+export interface BusquedaQueryProps {
+  ci?: string;
+  nombre?: string;
+  apellido?: string;
+  nombre_apellido?:string;
+}
+
 export const Busqueda = (props: any) => {
   const classes = useStyles();
   const lista = [createData('1', 'mati', 'b'), createData('2', 'john', 'doe')];
   const [listaMatch, setListaMatch] = React.useState([] as Data[])
+  const apiUrl = `${REACT_APP_URL}/persona/buscar/`;
   
-  const handleFormRequest = (): void => {
+  const handleFormRequest = (query:BusquedaQueryProps): void => {
+    console.log(query)
     axios({
       method: 'post',
       url: `${apiUrl}`,
@@ -41,7 +34,7 @@ export const Busqueda = (props: any) => {
           'Content-Type': 'application/json',
           "X-CSRFToken": csrftoken
       },
-      data: {nombre_apellido: 'hola'}
+      data: query
     })
       .then(function (response) {
         setListaMatch(response.data)
