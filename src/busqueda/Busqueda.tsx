@@ -8,8 +8,8 @@ import { getCookie } from '../utils/cookies';
 
 const csrftoken = getCookie('csrftoken');
 
-function createData(documento: string, nombre: string, apellido: string): Data {
-  return { documento, nombre, apellido };
+function createData(ci: string, nombre: string, apellido: string): Data {
+  return { ci, nombre, apellido };
 }
 
 export interface BusquedaQueryProps {
@@ -28,17 +28,18 @@ export const Busqueda = (props: any) => {
   const handleFormRequest = (query:BusquedaQueryProps): void => {
     console.log(query)
     axios({
-      method: 'post',
+      method: 'get',
       url: `${apiUrl}`,
       headers: {
           'Content-Type': 'application/json',
           "X-CSRFToken": csrftoken
       },
-      data: query
+      params: query
     })
       .then(function (response) {
-        setListaMatch(response.data)
         console.log(response);
+        setListaMatch([])
+        setListaMatch(response.data)
       })
       .catch(function (error) {
         console.log(error);

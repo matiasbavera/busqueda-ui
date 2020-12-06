@@ -22,7 +22,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import SearchIcon from '@material-ui/icons/Search';
 
 export interface Data {
-  documento: string;
+  ci: string;
   nombre: string;
   apellido: string;
 }
@@ -66,7 +66,7 @@ interface HeadCell {
 }
 
 const headCells: HeadCell[] = [
-  { id: 'documento', numeric: false, disablePadding: true, label: 'CI' },
+  { id: 'ci', numeric: false, disablePadding: true, label: 'CI' },
   { id: 'nombre', numeric: false, disablePadding: true, label: 'Nombres' },
   { id: 'apellido', numeric: true, disablePadding: false, label: 'Apellidos' },
   // { id: 'buscar', numeric: true, disablePadding: false, label: 'Buscar' },
@@ -165,7 +165,7 @@ export const TablaBusqueda = (props: TablaBusquedaProps) => {
   const [orderBy, setOrderBy] = React.useState<keyof Data>('nombre');
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -262,7 +262,7 @@ export const TablaBusqueda = (props: TablaBusquedaProps) => {
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell> */}
-                      <TableCell align="right">{row.documento}</TableCell>
+                      <TableCell align="right">{row.ci}</TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
                         {row.nombre}
                       </TableCell>
@@ -284,7 +284,7 @@ export const TablaBusqueda = (props: TablaBusquedaProps) => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[10, 25, 50]}
           component="div"
           count={datos.length}
           rowsPerPage={rowsPerPage}

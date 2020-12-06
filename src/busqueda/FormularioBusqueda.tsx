@@ -35,7 +35,8 @@ export const FormularioBusqueda = (props: FormularioBusquedaProps) => {
     return isValid
   }
 
-  const formRequest = ():void =>{
+  const formRequest = (e:any):void =>{
+    e.preventDefault();
     if (isFormValid()){
       handleFormRequest(
         {
@@ -102,7 +103,7 @@ export const FormularioBusqueda = (props: FormularioBusquedaProps) => {
       {/* <TextField label={'Caso'}></TextField>
             <TextField label={'Despacho'}></TextField>
             <TextField label={'ID. Documento'}></TextField> */}
-      <IconButton id="buscar-btn" color="primary" onClick={formRequest}>
+      <IconButton id="buscar-btn" color="primary" onClick={(e)=>formRequest(e)}>
         <SearchIcon />
       </IconButton>
     </form>
